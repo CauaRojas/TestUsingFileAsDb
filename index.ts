@@ -6,10 +6,17 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-	res.send(getDumpArray());
+	//when the user requests the root path, send the dump text
+	//when the user sends a request to with parameters we return the dump text that matches the parameters
+	res.send(
+		req.query.todo
+			? getDumpArray().filter((todo) => todo === req.query.todo)
+			: getDumpArray()
+	);
 });
 
 app.put('/', (req, res) => {
+	//When the user adds a todo, we add it to the dump file
 	fs.writeFile(
 		'dump.txt',
 		getDumpText() + '\n' + (req.query.todo?.toString() as string),
