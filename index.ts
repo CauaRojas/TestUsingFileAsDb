@@ -6,13 +6,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-	res.send('Hello World!');
+	res.send(getDumpArray());
 });
-
-const getDumpText = (): string => {
-	const dumpFile = fs.readFileSync('./dump.txt', 'utf8');
-	return dumpFile;
-};
 
 app.put('/', (req, res) => {
 	fs.writeFile(
@@ -27,6 +22,18 @@ app.put('/', (req, res) => {
 		}
 	);
 });
+
+// function to get the dump text
+const getDumpText = (): string => {
+	const dumpFile = fs.readFileSync('./dump.txt', 'utf8');
+	return dumpFile;
+};
+
+//function to convert the dump text to an array
+const getDumpArray = (): string[] => {
+	const dumpFile = getDumpText();
+	return dumpFile.split('\n');
+};
 
 app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
